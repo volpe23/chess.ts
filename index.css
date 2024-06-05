@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .board {
+        @apply h-96 w-96 flex flex-col
+    }
+
+    .board_row {
+        @apply flex justify-evenly content-evenly flex-1
+    }
+    
+    .square {
+        @apply text-black flex-1
+    }
+
+    .dark {
+        @apply bg-amber-800
+    }
+}
