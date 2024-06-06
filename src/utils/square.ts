@@ -1,11 +1,12 @@
-import { COLS, IntRange, OneToEight, SquareColor } from "./utils";
+import { Coordinate, SquareColor, SquareBg } from "./utils";
 
-type Coordinate = {
-    col: keyof typeof COLS
-    row: OneToEight
+
+export interface SquareField {
+    field: HTMLDivElement
+    coordinate: string
 }
 
-export default class Square {
+export default class Square implements SquareField {
 
     private _field: HTMLDivElement;
     private _coordinate: Coordinate;
