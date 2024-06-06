@@ -1,14 +1,13 @@
-import { BoardInterface } from '../utils/board';
+import { SquareField } from '../utils/square';
 import { Coordinate } from '../utils/utils';
 
-
 export enum Pieces {
-    PAWN = 'pawn',
-    KING = 'king',
-    QUEEN = 'queen',
-    ROOK = 'rook',
-    KNIGHT = 'knight',
-    BISHOP = 'bishop'
+	PAWN = 'pawn',
+	KING = 'king',
+	QUEEN = 'queen',
+	ROOK = 'rook',
+	KNIGHT = 'knight',
+	BISHOP = 'bishop',
 }
 
 export type PieceType = `${Pieces}`;
@@ -21,40 +20,57 @@ export enum PieceColor {
 export type PieceColorType = `${PieceColor}`;
 
 interface PieceInt {
-	board: BoardInterface;
+	board: SquareField[][];
 	readonly color: PieceColorType;
 	element: HTMLDivElement;
-    coordinate: Coordinate
-    hasMoved: boolean
+	coordinate: Coordinate;
+	hasMoved: boolean;
+	pieceNameString: string;
+	type: PieceType;
+	readonly image: string;
 }
 
 export default class Piece implements PieceInt {
 	color: PieceColorType;
-	board: BoardInterface;
+	board: SquareField[][];
 	element: HTMLDivElement;
-    coordinate: Coordinate;
-    private _hasMoved = false;
+	coordinate: Coordinate;
+	private _hasMoved = false;
+	pieceNameString: string;
+	type: PieceType;
+	image: string;
 
-
-	constructor(board: BoardInterface, color: PieceColorType, type: PieceType, coordinate: Coordinate, image: any) {
+	constructor(
+		board: SquareField[][],
+		color: PieceColorType,
+		type: PieceType,
+        coordinate: Coordinate,
+        image: any
+	) {
 		this.board = board;
 		this.color = color;
-        this.coordinate = coordinate;
-
-        this.element = document.createElement('div');
-        this.init(type);
+		this.coordinate = coordinate;
+		this.type = type;
+        this.image = image
+		this.pieceNameString = `${this.color}_${type}`;
+		this.element = document.createElement('img');
+		this.init();
 	}
 
-    private init(type: PieceType) {
-        this.element.setAttribute('id', `${this.color}_${type}`);
-        this.element.addEventListener('click', () => {})
-    }
+	private setImage(): void {
+		this.image = `./src/svg/${this.color}/${this.type}`;
+	}
 
-    public move(coordinate: Coordinate) {
+	private init() {
+		this.element.setAttribute('id', this.pieceNameString);
+		this.element.addEventListener('click', () => {});
+        // this.setImage();
+        this.element.setAttribute('src', this.image);
+	}
 
-    }
+	public move(coordinate: Coordinate) {}
 
-    get hasMoved(): boolean {
-        return this._hasMoved;
-    }
+	get hasMoved(): boolean {
+		return this._hasMoved;
+	}
 }

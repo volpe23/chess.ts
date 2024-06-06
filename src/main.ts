@@ -7,4 +7,4 @@ const board = new Board();
 app?.append(board.gameBoard)
 
 const flipBtn = document.getElementById('flip');
-flipBtn?.addEventListener('click', () => board.flip());
+flipBtn?.addEventListener('click', () => board.startNewGame());

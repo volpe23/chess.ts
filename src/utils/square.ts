@@ -1,33 +1,44 @@
-import { Coordinate, SquareColor, SquareBg } from "./utils";
-
+import Piece from '../pieces/piece';
+import { Coordinate, SquareColor, SquareBg } from './utils';
 
 export interface SquareField {
-    field: HTMLDivElement
-    coordinate: string
+	field: HTMLDivElement;
+	coordinate: Coordinate;
+	setPiece(piece: Piece): void;
 }
 
 export default class Square implements SquareField {
+	private _field: HTMLDivElement;
+	private _coordinate: Coordinate;
+	private _piece: Piece | null;
 
-    private _field: HTMLDivElement;
-    private _coordinate: Coordinate;
+	constructor(coordinate: Coordinate, bgColor: SquareColor, piece = null) {
+		this._piece = piece;
+		this._coordinate = coordinate;
+		this._field = document.createElement('div');
+		this._field.classList.add('square', bgColor);
+		this.init();
+	}
 
-    constructor(coordinate: Coordinate, bgColor: SquareColor) {
-        this._coordinate = coordinate;
-        this._field = document.createElement('div');
-        this._field.classList.add('square', bgColor);
-        this.init();
-    }
+	private init() {
+		if (this._piece !== null) {
+			this._field.textContent = this._piece.pieceNameString;
+		}
+	}
 
-    private init() {
-        this._field.textContent = this.coordinate;
-    }
+	public setPiece(piece: Piece) {
+		this._piece = piece;
+        this._field.appendChild(piece.element)
+	}
 
-    public get field() {
-        return this._field;
-    }
+	public get field() {
+		return this._field;
+	}
 
+	public get coordinateString() {
+		return Object.values(this._coordinate).join('');
+	}
     public get coordinate() {
-        return Object.values(this._coordinate).join('');
+        return this._coordinate;
     }
-
 }
