@@ -4,7 +4,7 @@
 
 @layer components {
     .board {
-        @apply h-96 w-96 flex flex-col
+        @apply h-96 w-96 flex flex-col-reverse
     }
 
     .board_row {

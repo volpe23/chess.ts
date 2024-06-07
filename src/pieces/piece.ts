@@ -13,8 +13,8 @@ export enum Pieces {
 export type PieceType = `${Pieces}`;
 
 export enum PieceColor {
-	WHITE = 'white',
-	BLACK = 'black',
+	WHITE = 'WHITE',
+	BLACK = 'BLACK',
 }
 
 export type PieceColorType = `${PieceColor}`;

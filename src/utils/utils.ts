@@ -30,7 +30,7 @@ type Range<N extends number, A extends number[] = []> = A['length'] extends N
 	? A[number]
 	: Range<N, [...A, A['length']]>;
 
-export type OneToEight = Range<9, [1]>;
+export type OneToEight = Range<9, [0]>;
 
 export enum SquareBg {
 	WHITE = 'white',
