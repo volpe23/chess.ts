@@ -11,25 +11,25 @@ import blackKnightImage from '../svg/black/knight.svg';
 import blackBishopImage from '../svg/black/bishop.svg';
 import blackRookImage from '../svg/black/rook.svg';
 
-import { COLS, OneToEight } from '../utils/utils';
-import { PieceColor, PieceColorType, PieceType } from './piece';
+import { COLS, ColNumberCoordinateType, OneToEight } from '../utils/utils';
+import { PieceColorType, PieceType } from './piece';
 
 export type PieceObj = {
     [P in PieceColorType]: {
-        row: number,
+        row: 0 | 7,
         pieces: SinglePieceObj
     }
 }
 
 export type PieceInfoType = {
 	image: string,
-	col: OneToEight[],
+	col: ColNumberCoordinateType[],
 	row?: 1 | -1
 };
 
 export type SinglePieceObj = Record<PieceType, PieceInfoType>
 
-const colCount = Object.values(COLS) as OneToEight[];
+const colCount: ColNumberCoordinateType[] = Object.values(COLS);
 
 export const PIECES: PieceObj = {
 	WHITE: {

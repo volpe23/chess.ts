@@ -15,7 +15,7 @@
         @apply text-black flex-1
     }
 
-    .dark {
+    .DARK {
         @apply bg-amber-800
     }
 }

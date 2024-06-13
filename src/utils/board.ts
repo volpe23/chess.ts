@@ -1,8 +1,8 @@
 import Square, { SquareField } from './square';
-import { COLS, OneToEight, SquareBg } from './utils';
-import { PIECES, PieceObj, PieceInfoType } from '../pieces/game_pieces';
+import { COLS, COLS_COORD, ColCoordinateType, ColNumberCoordinateType, OneToEight, SquareBg } from './utils';
+import { PIECES, PieceObj } from '../pieces/game_pieces';
 import Pawn from '../pieces/pawn';
-import Piece, { PieceColor, PieceColorType, PieceType } from '../pieces/piece';
+import Piece, { PieceColorType, PieceType } from '../pieces/piece';
 import Bishop from '../pieces/bishop';
 import Rook from '../pieces/rook';
 import King from '../pieces/king';
@@ -16,8 +16,8 @@ export interface BoardInterface {
 }
 
 export default class Board implements BoardInterface {
-	static ROWS = Object.keys(COLS).length - 1;
-	static COLS = Object.keys(COLS).length - 1;
+	static ROWS = COLS_COORD.length - 1;
+	static COLS = COLS_COORD.length - 1;
 	fields: SquareField[][];
 	private _gameBoard: HTMLDivElement;
 	selectedField: SquareField | null;
@@ -29,8 +29,8 @@ export default class Board implements BoardInterface {
 				(_, col) =>
 					new Square(
 						{
-							col: Object.keys(COLS)[col] as keyof typeof COLS,
-							row: (row + 1) as OneToEight,
+							col: COLS_COORD[col],
+							row: COLS[COLS_COORD[row]],
 						},
 						((row % 2) + col) % 2 === 1
 							? SquareBg.WHITE
@@ -58,24 +58,25 @@ export default class Board implements BoardInterface {
 	startNewGame() {
 		// create white pieces
 		(Object.keys(PIECES) as PieceColorType[]).forEach((color) => {
-			(Object.keys(PIECES[color].pieces) as PieceType[]).forEach((piece) => {
+			const pieceObj = PIECES[color];
+			(Object.keys(pieceObj.pieces) as PieceType[]).forEach((piece) => {
 				const pcs = PIECES[color].pieces[piece];
 				pcs.col.forEach((col) => {
 					let classInstance: Piece | undefined;
 					const colCoordinate = Object.keys(COLS)[
 						col
-					] as keyof typeof COLS;
-					let row = PIECES[color].row as OneToEight;
+					] as ColCoordinateType;
+					let row = pieceObj.row;
 					switch (piece) {
 						case 'PAWN':
                             if (pcs.row === undefined) {
                                 break;
                             }
-                            row = row + pcs.row as OneToEight
+							const pawnRow = row + pcs.row as ColNumberCoordinateType;
 							classInstance = new Pawn(
 								this.fields,
 								color,
-								{ col: colCoordinate, row: row },
+								{ col: colCoordinate, row: pawnRow },
 								pcs.image
 							);
 							break;

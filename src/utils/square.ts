@@ -14,6 +14,7 @@ export default class Square implements SquareField {
 
 	constructor(coordinate: Coordinate, bgColor: SquareColor, piece = null) {
 		this._piece = piece;
+		coordinate.row++;
 		this._coordinate = coordinate;
 		this._field = document.createElement('div');
 		this._field.classList.add('square', bgColor);

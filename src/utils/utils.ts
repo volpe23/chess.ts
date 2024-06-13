@@ -1,3 +1,7 @@
+export const objKeys = <Obj extends object>(obj: Obj): (keyof Obj)[] => {
+	return Object.keys(obj) as (keyof Obj)[]
+}
+
 export const COLS = {
 	A: 0,
 	B: 1,
@@ -9,10 +13,17 @@ export const COLS = {
 	H: 7,
 } as const;
 
+export const COLS_COORD = objKeys(COLS);
+
+
+export type ColCoordinateType = keyof typeof COLS;
+
+export type ColNumberCoordinateType = (typeof COLS)[ColCoordinateType];
+
 export type Coordinate = {
-    col: keyof typeof COLS
-    row: OneToEight
-}
+	col: ColCoordinateType;
+	row: ColNumberCoordinateType;
+};
 
 type Enumerate<
 	N extends number,
@@ -32,9 +43,9 @@ type Range<N extends number, A extends number[] = []> = A['length'] extends N
 
 export type OneToEight = Range<9, [0]>;
 
-export enum SquareBg {
-	WHITE = 'WHITE',
-	DARK = 'DARK',
-}
+export const SquareBg = {
+	WHITE: 'WHITE',
+	DARK: 'DARK',
+} as const;
 
-export type SquareColor = `${SquareBg}`;
+export type SquareColor = keyof typeof SquareBg;
