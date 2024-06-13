@@ -12,31 +12,22 @@ import blackBishopImage from '../svg/black/bishop.svg';
 import blackRookImage from '../svg/black/rook.svg';
 
 import { COLS, OneToEight } from '../utils/utils';
-import Board from '../utils/board';
-import { PieceColor, PieceColorType } from './piece';
+import { PieceColor, PieceColorType, PieceType } from './piece';
 
-type PieceObj = {
-    [PieceColor.BLACK]: {
+export type PieceObj = {
+    [P in PieceColorType]: {
         row: number,
-        pieces: {
-            [K: string]: {
-                image: string,
-                col: OneToEight[],
-                row?: 1 | -1
-            }
-        }
-    },
-    [PieceColor.WHITE]: {
-        row: number,
-        pieces: {
-            [K: string]: {
-                image: string,
-                col: OneToEight[],
-                row?: 1 | -1
-            }
-        }
+        pieces: SinglePieceObj
     }
 }
+
+export type PieceInfoType = {
+	image: string,
+	col: OneToEight[],
+	row?: 1 | -1
+};
+
+export type SinglePieceObj = Record<PieceType, PieceInfoType>
 
 const colCount = Object.values(COLS) as OneToEight[];
 
@@ -44,7 +35,7 @@ export const PIECES: PieceObj = {
 	WHITE: {
 		row: 0,
 		pieces: {
-			PAWNS: {
+			PAWN: {
 				image: whitePawnImage,
 				col: colCount,
 				row: 1,
@@ -57,15 +48,15 @@ export const PIECES: PieceObj = {
 				image: whiteQueenImage,
 				col: [COLS.D],
 			},
-			ROOKS: {
+			ROOK: {
 				image: whiteRookImage,
 				col: [COLS.A, COLS.H],
 			},
-			KNIGHTS: {
+			KNIGHT: {
 				image: whiteKnightImage,
 				col: [COLS.B, COLS.G],
 			},
-			BISHOPS: {
+			BISHOP: {
 				image: whiteBishopImage,
 				col: [COLS.C, COLS.F],
 			},
@@ -74,7 +65,7 @@ export const PIECES: PieceObj = {
     BLACK : {
 		row: 7,
 		pieces: {
-			PAWNS: {
+			PAWN: {
 				image: blackPawnImage,
 				col: colCount,
 				row: - 1,
@@ -87,15 +78,15 @@ export const PIECES: PieceObj = {
 				image: blackQueenImage,
 				col: [COLS.D],
 			},
-			ROOKS: {
+			ROOK: {
 				image: blackRookImage,
 				col: [COLS.A, COLS.H],
 			},
-			KNIGHTS: {
+			KNIGHT: {
 				image: blackKnightImage,
 				col: [COLS.B, COLS.G],
 			},
-			BISHOPS: {
+			BISHOP: {
 				image: blackBishopImage,
 				col: [COLS.C, COLS.F],
 			},

@@ -33,8 +33,8 @@ type Range<N extends number, A extends number[] = []> = A['length'] extends N
 export type OneToEight = Range<9, [0]>;
 
 export enum SquareBg {
-	WHITE = 'white',
-	DARK = 'dark',
+	WHITE = 'WHITE',
+	DARK = 'DARK',
 }
 
 export type SquareColor = `${SquareBg}`;

@@ -1,23 +1,24 @@
 import { SquareField } from '../utils/square';
 import { Coordinate } from '../utils/utils';
 
-export enum Pieces {
-	PAWN = 'pawn',
-	KING = 'king',
-	QUEEN = 'queen',
-	ROOK = 'rook',
-	KNIGHT = 'knight',
-	BISHOP = 'bishop',
-}
+export const Pieces = {
+	PAWN : 'PAWN',
+	KING : 'KING',
+	QUEEN : 'QUEEN',
+	ROOK : 'ROOK',
+	KNIGHT : 'KNIGHT',
+	BISHOP : 'BISHOP',
 
-export type PieceType = `${Pieces}`;
+} as const
 
-export enum PieceColor {
-	WHITE = 'WHITE',
-	BLACK = 'BLACK',
-}
+export type PieceType = keyof typeof Pieces;
 
-export type PieceColorType = `${PieceColor}`;
+export const PieceColor = {
+	WHITE: 'WHITE',
+	BLACK: 'BLACK'
+} as const;
+
+export type PieceColorType = keyof typeof PieceColor;
 
 interface PieceInt {
 	board: SquareField[][];
