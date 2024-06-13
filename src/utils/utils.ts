@@ -25,23 +25,7 @@ export type Coordinate = {
 	row: ColNumberCoordinateType;
 };
 
-type Enumerate<
-	N extends number,
-	Acc extends number[] = []
-> = Acc['length'] extends N
-	? Acc[number]
-	: Enumerate<N, [...Acc, Acc['length']]>;
 
-export type IntRange<F extends number, T extends number> = Exclude<
-	Enumerate<T>,
-	Enumerate<F>
->;
-
-type Range<N extends number, A extends number[] = []> = A['length'] extends N
-	? A[number]
-	: Range<N, [...A, A['length']]>;
-
-export type OneToEight = Range<9, [0]>;
 
 export const SquareBg = {
 	WHITE: 'WHITE',

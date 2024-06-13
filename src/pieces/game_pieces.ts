@@ -11,7 +11,7 @@ import blackKnightImage from '../svg/black/knight.svg';
 import blackBishopImage from '../svg/black/bishop.svg';
 import blackRookImage from '../svg/black/rook.svg';
 
-import { COLS, ColNumberCoordinateType, OneToEight } from '../utils/utils';
+import { COLS, ColNumberCoordinateType} from '../utils/utils';
 import { PieceColorType, PieceType } from './piece';
 
 export type PieceObj = {

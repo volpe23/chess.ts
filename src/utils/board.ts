@@ -1,5 +1,5 @@
 import Square, { SquareField } from './square';
-import { COLS, COLS_COORD, ColCoordinateType, ColNumberCoordinateType, OneToEight, SquareBg } from './utils';
+import { COLS, COLS_COORD, ColCoordinateType, ColNumberCoordinateType, SquareBg } from './utils';
 import { PIECES, PieceObj } from '../pieces/game_pieces';
 import Pawn from '../pieces/pawn';
 import Piece, { PieceColorType, PieceType } from '../pieces/piece';
