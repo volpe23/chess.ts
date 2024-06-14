@@ -1,5 +1,11 @@
 import Square, { SquareField } from './square';
-import { COLS, COLS_COORD, ColCoordinateType, ColNumberCoordinateType, SquareBg } from './utils';
+import {
+	COLS,
+	COLS_COORD,
+	ColCoordinateType,
+	ColNumberCoordinateType,
+	SquareBg,
+} from './utils';
 import { PIECES, PieceObj } from '../pieces/game_pieces';
 import Pawn from '../pieces/pawn';
 import Piece, { PieceColorType, PieceType } from '../pieces/piece';
@@ -13,6 +19,7 @@ export interface BoardInterface {
 	fields: SquareField[][];
 	gameBoard: HTMLDivElement;
 	selectedField: SquareField | null;
+	selectedPiece: Piece | null;
 }
 
 export default class Board implements BoardInterface {
@@ -21,9 +28,11 @@ export default class Board implements BoardInterface {
 	fields: SquareField[][];
 	private _gameBoard: HTMLDivElement;
 	selectedField: SquareField | null;
+	selectedPiece: Piece | null;
 
 	constructor() {
 		this.selectedField = null;
+		this.selectedPiece = null;
 		this.fields = new Array(Board.ROWS + 1).fill('').map((_, row) =>
 			new Array(Board.COLS + 1).fill('').map(
 				(_, col) =>
@@ -63,20 +72,20 @@ export default class Board implements BoardInterface {
 				const pcs = PIECES[color].pieces[piece];
 				pcs.col.forEach((col) => {
 					let classInstance: Piece | undefined;
-					const colCoordinate = Object.keys(COLS)[
+					const colCoordinate = COLS_COORD[
 						col
 					] as ColCoordinateType;
+					console.log(colCoordinate);
 					let row = pieceObj.row;
 					switch (piece) {
 						case 'PAWN':
-                            if (pcs.row === undefined) {
-                                break;
-                            }
-							const pawnRow = row + pcs.row as ColNumberCoordinateType;
+							if (pcs.row === undefined) {
+								break;
+							}
+							row = row + pcs.row;
 							classInstance = new Pawn(
 								this.fields,
 								color,
-								{ col: colCoordinate, row: pawnRow },
 								pcs.image
 							);
 							break;
@@ -84,7 +93,6 @@ export default class Board implements BoardInterface {
 							classInstance = new Bishop(
 								this.fields,
 								color,
-								{ col: colCoordinate, row },
 								pcs.image
 							);
 							break;
@@ -92,7 +100,6 @@ export default class Board implements BoardInterface {
 							classInstance = new Rook(
 								this.fields,
 								color,
-								{ col: colCoordinate, row },
 								pcs.image
 							);
 							break;
@@ -100,7 +107,6 @@ export default class Board implements BoardInterface {
 							classInstance = new King(
 								this.fields,
 								color,
-								{ col: colCoordinate, row },
 								pcs.image
 							);
 							break;
@@ -108,7 +114,6 @@ export default class Board implements BoardInterface {
 							classInstance = new Queen(
 								this.fields,
 								color,
-								{ col: colCoordinate, row },
 								pcs.image
 							);
 							break;
@@ -116,18 +121,17 @@ export default class Board implements BoardInterface {
 							classInstance = new Knight(
 								this.fields,
 								color,
-								{ col: colCoordinate, row },
 								pcs.image
 							);
 							break;
 					}
 					if (classInstance !== undefined) {
-						this.fields[classInstance.coordinate.row][col].setPiece(
-							classInstance
+						const square = this.fields[row][col];
+						square.setPiece(classInstance);
+						classInstance.setCoordinate(square.coordinate);
+						this._gameBoard.children[row].children[col].append(
+							classInstance?.element
 						);
-						this._gameBoard.children[
-							classInstance.coordinate.row
-						].children[col].append(classInstance?.element);
 					}
 				});
 			});
@@ -137,6 +141,10 @@ export default class Board implements BoardInterface {
 	flip(): void {
 		this.fields = this.fields.map((row) => row.reverse()).reverse();
 		this.create();
+	}
+
+	selectPiece(piece: Piece) {
+		this.selectedPiece = piece;
 	}
 
 	get gameBoard() {

@@ -4,7 +4,7 @@ import Piece, { PieceColorType, PieceType} from "./piece";
 
 export default class Queen extends Piece {
 
-    constructor(board: SquareField[][], color: PieceColorType, coordinate: Coordinate, image: any) {
-        super(board, color, 'QUEEN', coordinate, image)
+    constructor(board: SquareField[][], color: PieceColorType, image: any) {
+        super(board, color, 'QUEEN', image)
     }
 }

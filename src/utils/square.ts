@@ -23,7 +23,7 @@ export default class Square implements SquareField {
 
 	private init() {
 		if (this._piece === null) {
-			this._field.textContent = this.coordinateString;
+			// this._field.textContent = this.coordinateString;
 		}
 	}
 

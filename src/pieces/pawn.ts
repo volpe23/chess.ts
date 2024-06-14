@@ -9,8 +9,8 @@ export default class Pawn extends Piece {
     }
 
 
-    constructor(board: SquareField[][], color: PieceColorType, coordinate: Coordinate, image: any) {
-        super(board, color, 'PAWN', coordinate, image)
+    constructor(board: SquareField[][], color: PieceColorType, image: any) {
+        super(board, color, 'PAWN', image)
         color === 'WHITE' ? this.moveRules.direction = 1 : this.moveRules.direction = -1
     }
 

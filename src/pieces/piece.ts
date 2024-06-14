@@ -24,7 +24,7 @@ interface PieceInt {
 	board: SquareField[][];
 	readonly color: PieceColorType;
 	element: HTMLDivElement;
-	coordinate: Coordinate;
+	coordinate: Coordinate | null;
 	hasMoved: boolean;
 	pieceNameString: string;
 	type: PieceType;
@@ -35,7 +35,7 @@ export default class Piece implements PieceInt {
 	color: PieceColorType;
 	board: SquareField[][];
 	element: HTMLDivElement;
-	coordinate: Coordinate;
+	coordinate: Coordinate | null;
 	private _hasMoved = false;
 	pieceNameString: string;
 	type: PieceType;
@@ -45,12 +45,11 @@ export default class Piece implements PieceInt {
 		board: SquareField[][],
 		color: PieceColorType,
 		type: PieceType,
-        coordinate: Coordinate,
         image: any
 	) {
 		this.board = board;
 		this.color = color;
-		this.coordinate = coordinate;
+		this.coordinate = null;
 		this.type = type;
         this.image = image
 		this.pieceNameString = `${this.color}_${type}`;
@@ -63,6 +62,7 @@ export default class Piece implements PieceInt {
 	}
 
 	private init() {
+		this.element.className = 'w-full h-full';
 		this.element.setAttribute('id', this.pieceNameString);
 		this.element.addEventListener('click', () => {});
         // this.setImage();
@@ -70,6 +70,10 @@ export default class Piece implements PieceInt {
 	}
 
 	public move(coordinate: Coordinate) {}
+
+	setCoordinate(coordinate: Coordinate) {
+		this.coordinate = coordinate;
+	}
 
 	get hasMoved(): boolean {
 		return this._hasMoved;
