@@ -2,20 +2,34 @@ import { SquareField } from '../utils/square';
 import { Coordinate } from '../utils/utils';
 
 export const Pieces = {
-	PAWN : 'PAWN',
-	KING : 'KING',
-	QUEEN : 'QUEEN',
-	ROOK : 'ROOK',
-	KNIGHT : 'KNIGHT',
-	BISHOP : 'BISHOP',
+	PAWN: 'PAWN',
+	KING: 'KING',
+	QUEEN: 'QUEEN',
+	ROOK: 'ROOK',
+	KNIGHT: 'KNIGHT',
+	BISHOP: 'BISHOP',
+} as const;
 
-} as const
+export type MoveRuleType = {
+	move: {
+		direction: 1 | -1 | 0;
+		vertical: number;
+		horizontal: number;
+		diagonal: number;
+	},
+	take: {
+		len: number,
+		vertical: boolean,
+		horizontal: boolean,
+		diagonal: boolean
+	};
+};
 
 export type PieceType = keyof typeof Pieces;
 
 export const PieceColor = {
 	WHITE: 'WHITE',
-	BLACK: 'BLACK'
+	BLACK: 'BLACK',
 } as const;
 
 export type PieceColorType = keyof typeof PieceColor;
@@ -29,6 +43,7 @@ interface PieceInt {
 	pieceNameString: string;
 	type: PieceType;
 	readonly image: string;
+	moveRules: MoveRuleType
 }
 
 export default class Piece implements PieceInt {
@@ -36,22 +51,27 @@ export default class Piece implements PieceInt {
 	board: SquareField[][];
 	element: HTMLDivElement;
 	coordinate: Coordinate | null;
+	private field: SquareField | null;
 	private _hasMoved = false;
 	pieceNameString: string;
 	type: PieceType;
 	image: string;
+	moveRules: MoveRuleType;
 
 	constructor(
 		board: SquareField[][],
 		color: PieceColorType,
 		type: PieceType,
-        image: any
+		image: any,
+		moveRules: MoveRuleType
 	) {
 		this.board = board;
 		this.color = color;
 		this.coordinate = null;
+		this.field = null;
 		this.type = type;
-        this.image = image
+		this.image = image;
+		this.moveRules = moveRules;
 		this.pieceNameString = `${this.color}_${type}`;
 		this.element = document.createElement('img');
 		this.init();
@@ -64,15 +84,27 @@ export default class Piece implements PieceInt {
 	private init() {
 		this.element.className = 'w-full h-full';
 		this.element.setAttribute('id', this.pieceNameString);
-		this.element.addEventListener('click', () => {});
-        // this.setImage();
-        this.element.setAttribute('src', this.image);
+		this.element.addEventListener('click', () => {
+			this.select();
+		});
+		// this.setImage();
+		this.element.setAttribute('src', this.image);
 	}
 
 	public move(coordinate: Coordinate) {}
 
-	setCoordinate(coordinate: Coordinate) {
-		this.coordinate = coordinate;
+	select() {
+		this.field?.selectPiece(this);
+		this.element.classList.add('selected');
+	}
+
+	deselect() {
+		this.element.classList.remove('selected');
+	}
+
+	setCoordinate(field: SquareField) {
+		this.field = field;
+		this.coordinate = field.coordinate;
 	}
 
 	get hasMoved(): boolean {

@@ -43,7 +43,8 @@ export default class Board implements BoardInterface {
 						},
 						((row % 2) + col) % 2 === 1
 							? SquareBg.WHITE
-							: SquareBg.DARK
+							: SquareBg.DARK,
+						this.selectPiece.bind(this)
 					)
 			)
 		);
@@ -72,10 +73,6 @@ export default class Board implements BoardInterface {
 				const pcs = PIECES[color].pieces[piece];
 				pcs.col.forEach((col) => {
 					let classInstance: Piece | undefined;
-					const colCoordinate = COLS_COORD[
-						col
-					] as ColCoordinateType;
-					console.log(colCoordinate);
 					let row = pieceObj.row;
 					switch (piece) {
 						case 'PAWN':
@@ -88,6 +85,7 @@ export default class Board implements BoardInterface {
 								color,
 								pcs.image
 							);
+							console.log(color, classInstance.moveRules)
 							break;
 						case 'BISHOP':
 							classInstance = new Bishop(
@@ -128,7 +126,7 @@ export default class Board implements BoardInterface {
 					if (classInstance !== undefined) {
 						const square = this.fields[row][col];
 						square.setPiece(classInstance);
-						classInstance.setCoordinate(square.coordinate);
+						classInstance.setCoordinate(square);
 						this._gameBoard.children[row].children[col].append(
 							classInstance?.element
 						);
@@ -144,6 +142,9 @@ export default class Board implements BoardInterface {
 	}
 
 	selectPiece(piece: Piece) {
+		if (this.selectedPiece !== null) {
+			this.selectedPiece.deselect();
+		}
 		this.selectedPiece = piece;
 	}
 

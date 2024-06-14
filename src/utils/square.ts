@@ -5,19 +5,22 @@ export interface SquareField {
 	field: HTMLDivElement;
 	coordinate: Coordinate;
 	setPiece(piece: Piece): void;
+	selectPiece: (piece: Piece) => {}
 }
 
 export default class Square implements SquareField {
 	private _field: HTMLDivElement;
 	private _coordinate: Coordinate;
 	private _piece: Piece | null;
+	selectPiece: (piece: Piece) => {}
 
-	constructor(coordinate: Coordinate, bgColor: SquareColor, piece = null) {
+	constructor(coordinate: Coordinate, bgColor: SquareColor, selectPiece: any, piece = null) {
 		this._piece = piece;
 		coordinate.row++;
 		this._coordinate = coordinate;
 		this._field = document.createElement('div');
 		this._field.classList.add('square', bgColor);
+		this.selectPiece = selectPiece
 		this.init();
 	}
 

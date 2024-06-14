@@ -18,4 +18,8 @@
     .DARK {
         @apply bg-amber-800
     }
+
+    .selected {
+        @apply bg-red-700
+    }
 }
