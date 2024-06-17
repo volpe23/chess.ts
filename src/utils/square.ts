@@ -1,26 +1,33 @@
-import Piece from '../pieces/piece';
+import Piece, { PieceColorType } from '../pieces/piece';
 import { Coordinate, SquareColor, SquareBg } from './utils';
 
 export interface SquareField {
 	field: HTMLDivElement;
 	coordinate: Coordinate;
 	setPiece(piece: Piece): void;
-	selectPiece: (piece: Piece) => {}
+	selectPiece: (piece: Piece) => {};
+	hasPiece(): boolean;
+	pieceColor(): PieceColorType | undefined;
 }
 
 export default class Square implements SquareField {
 	private _field: HTMLDivElement;
 	private _coordinate: Coordinate;
 	private _piece: Piece | null;
-	selectPiece: (piece: Piece) => {}
+	selectPiece: (piece: Piece) => {};
 
-	constructor(coordinate: Coordinate, bgColor: SquareColor, selectPiece: any, piece = null) {
+	constructor(
+		coordinate: Coordinate,
+		bgColor: SquareColor,
+		selectPiece: any,
+		piece = null
+	) {
 		this._piece = piece;
-		coordinate.row++;
+		coordinate.row;
 		this._coordinate = coordinate;
 		this._field = document.createElement('div');
 		this._field.classList.add('square', bgColor);
-		this.selectPiece = selectPiece
+		this.selectPiece = selectPiece;
 		this.init();
 	}
 
@@ -32,7 +39,7 @@ export default class Square implements SquareField {
 
 	public setPiece(piece: Piece) {
 		this._piece = piece;
-        this._field.appendChild(piece.element)
+		this._field.appendChild(piece.element);
 	}
 
 	public get field() {
@@ -40,9 +47,23 @@ export default class Square implements SquareField {
 	}
 
 	public get coordinateString() {
-		return Object.values(this._coordinate).join('');
+		const vals = Object.values(this._coordinate) as [
+			Coordinate['col'],
+			Coordinate['row']
+		];
+		vals[1]++;
+		return vals.join('');
 	}
-    public get coordinate() {
-        return this._coordinate;
-    }
+	public get coordinate() {
+		return this._coordinate;
+	}
+
+	public hasPiece() {
+		return this._piece !== null;
+	}
+
+	public pieceColor() {
+		if (this._piece !== null) return this._piece?.color;
+		return undefined;
+	}
 }

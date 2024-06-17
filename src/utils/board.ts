@@ -86,7 +86,6 @@ export default class Board implements BoardInterface {
 								square,
 								pcs.image
 							);
-							console.log(color, classInstance.moveRules);
 							break;
 						case 'BISHOP':
 							classInstance = new Bishop(

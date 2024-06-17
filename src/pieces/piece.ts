@@ -11,17 +11,17 @@ export const Pieces = {
 } as const;
 
 export type MoveRuleType = {
+	direction: 1 | -1 | 0;
 	move: {
-		direction: 1 | -1 | 0;
 		vertical: number;
 		horizontal: number;
 		diagonal: number;
-	},
+	};
 	take: {
-		len: number,
-		vertical: boolean,
-		horizontal: boolean,
-		diagonal: boolean
+		len: number;
+		vertical: boolean;
+		horizontal: boolean;
+		diagonal: boolean;
 	};
 };
 
@@ -43,7 +43,8 @@ interface PieceInt {
 	pieceNameString: string;
 	type: PieceType;
 	readonly image: string;
-	moveRules: MoveRuleType
+	moveRules: MoveRuleType;
+	possibleMoves: SquareField[];
 }
 
 export default class Piece implements PieceInt {
@@ -57,6 +58,7 @@ export default class Piece implements PieceInt {
 	type: PieceType;
 	image: string;
 	moveRules: MoveRuleType;
+	possibleMoves!: SquareField[];
 
 	constructor(
 		board: SquareField[][],
@@ -75,6 +77,11 @@ export default class Piece implements PieceInt {
 		this.moveRules = moveRules;
 		this.pieceNameString = `${this.color}_${type}`;
 		this.element = document.createElement('img');
+
+		if (this.type !== 'PAWN') {
+			this.possibleMoves = this.calculatePossibleMoves();
+		}
+
 		this.init();
 	}
 
@@ -97,10 +104,16 @@ export default class Piece implements PieceInt {
 	select() {
 		this.field?.selectPiece(this);
 		this.element.classList.add('selected');
+		this.possibleMoves.forEach(square => {
+			square.field.textContent = '*';
+		})
 	}
 
 	deselect() {
 		this.element.classList.remove('selected');
+		this.possibleMoves.forEach(square => {
+			square.field.textContent = '';
+		})
 	}
 
 	setCoordinate(field: SquareField) {
@@ -110,5 +123,14 @@ export default class Piece implements PieceInt {
 
 	get hasMoved(): boolean {
 		return this._hasMoved;
+	}
+
+	calculatePossibleMoves(): SquareField[] {
+		const possibleMoves: SquareField[] = []
+		for (const moveDir in this.moveRules.move) {
+			console.log(moveDir)
+
+		}
+		return possibleMoves;
 	}
 }
