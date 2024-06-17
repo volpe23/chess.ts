@@ -7,8 +7,8 @@ export default class Knight extends Piece {
 		direction: 0,
 		move: {
 			diagonal: 0,
-			vertical: 8,
-			horizontal: 8,
+			vertical: 0,
+			horizontal: 0,
 		},
 		take: {
 			len: 8,

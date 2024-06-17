@@ -1,6 +1,5 @@
 import { SquareField } from '../utils/square';
-import { Coordinate } from '../utils/utils';
-import Piece, { PieceColorType, PieceType, MoveRuleType } from './piece';
+import Piece, { PieceColorType, MoveRuleType } from './piece';
 
 export default class Rook extends Piece {
 	private static moveRules: MoveRuleType = {

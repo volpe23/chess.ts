@@ -8,6 +8,7 @@ export interface SquareField {
 	selectPiece: (piece: Piece) => {};
 	hasPiece(): boolean;
 	pieceColor(): PieceColorType | undefined;
+	calculateForPiece(): void;
 }
 
 export default class Square implements SquareField {
@@ -59,11 +60,15 @@ export default class Square implements SquareField {
 	}
 
 	public hasPiece() {
-		return this._piece !== null;
+		return this?._piece !== null;
 	}
 
 	public pieceColor() {
 		if (this._piece !== null) return this._piece?.color;
 		return undefined;
+	}
+
+	public calculateForPiece(): void {
+		this._piece?.calculatePossibleMoves();
 	}
 }

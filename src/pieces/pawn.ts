@@ -1,5 +1,5 @@
 import { SquareField } from '../utils/square';
-import { COLS_COORD, Coordinate, COLS } from '../utils/utils';
+import { COLS } from '../utils/utils';
 import Piece, { PieceColorType, MoveRuleType } from './piece';
 
 export default class Pawn extends Piece {
@@ -25,21 +25,20 @@ export default class Pawn extends Piece {
 		image: any
 	) {
 		super(board, color, 'PAWN', square, image, Pawn.moveRules);
-		color === 'WHITE'
-			? (this.moveRules.direction = 1)
-			: (this.moveRules.direction = -1);
+        if (this.color === 'WHITE') this.moveRules.direction = 1
+        else if(this.color === 'BLACK') this.moveRules.direction = -1;
+        console.log(this.moveRules.direction);
         // this.possibleMoves = this.calculatePossibleMoves();
-        console.log(this.possibleMoves);
 	}
 
-	calculatePossibleMoves(): SquareField[] {
+	calculatePossibleMoves(): void {
+        console.log(this.moveRules.direction, this.color);
 		const possibleMoves: SquareField[] = [];
 		for (
 			let row = this.coordinate.row + this.moveRules.direction;
             row !== this.coordinate.row + (this.moveRules.move.vertical * this.moveRules.direction) + this.moveRules.direction;
 			row += this.moveRules.direction
 		) {
-            console.log(this.moveRules.direction);
 			const square = this.board[row][COLS[this.coordinate.col]];
 			if (square.hasPiece()) {
 				break;
@@ -48,13 +47,13 @@ export default class Pawn extends Piece {
 			}
 		}
         // Take moves
-        for (let i = -1; i <= 1; i += 2){
+        for (let i = -1; i <= 1; i += 2) {
             const col = COLS[this.coordinate.col] + i;
             const square = this.board[this.coordinate.row + this.moveRules.direction][col];
             if (col > 0 && col < 8 && square.hasPiece() && square.pieceColor() !== this.color) {
                 possibleMoves.push(square)
             }
         }
-		return possibleMoves;
+        this.possibleMoves = possibleMoves;
 	}
 }

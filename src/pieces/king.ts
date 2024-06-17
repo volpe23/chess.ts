@@ -6,14 +6,14 @@ export default class King extends Piece {
 	private static moveRules: MoveRuleType = {
 		direction: 0,
 		move: {
-			diagonal: 0,
-			vertical: 8,
-			horizontal: 8,
+			diagonal: 1,
+			vertical: 1,
+			horizontal: 1,
 		},
 		take: {
-			len: 8,
+			len: 1,
 			vertical: true,
-			diagonal: false,
+			diagonal: true,
 			horizontal: true,
 		},
 	};

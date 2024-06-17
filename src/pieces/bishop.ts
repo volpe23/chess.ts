@@ -6,15 +6,15 @@ export default class Bishop extends Piece {
 	private static moveRules: MoveRuleType = {
 		direction: 0,
 		move: {
-			diagonal: 0,
-			vertical: 8,
-			horizontal: 8,
+			diagonal: 8,
+			vertical: 0,
+			horizontal: 0,
 		},
 		take: {
 			len: 8,
-			vertical: true,
-			diagonal: false,
-			horizontal: true,
+			vertical: false,
+			diagonal: true,
+			horizontal: false,
 		},
 	};
 

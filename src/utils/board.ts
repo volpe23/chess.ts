@@ -2,11 +2,9 @@ import Square, { SquareField } from './square';
 import {
 	COLS,
 	COLS_COORD,
-	ColCoordinateType,
-	ColNumberCoordinateType,
 	SquareBg,
 } from './utils';
-import { PIECES, PieceObj } from '../pieces/game_pieces';
+import { PIECES } from '../pieces/game_pieces';
 import Pawn from '../pieces/pawn';
 import Piece, { PieceColorType, PieceType } from '../pieces/piece';
 import Bishop from '../pieces/bishop';
@@ -20,6 +18,7 @@ export interface BoardInterface {
 	gameBoard: HTMLDivElement;
 	selectedField: SquareField | null;
 	selectedPiece: Piece | null;
+	pieceSquares: Piece[];
 }
 
 export default class Board implements BoardInterface {
@@ -29,6 +28,7 @@ export default class Board implements BoardInterface {
 	private _gameBoard: HTMLDivElement;
 	selectedField: SquareField | null;
 	selectedPiece: Piece | null;
+	pieceSquares: Piece[];
 
 	constructor() {
 		this.selectedField = null;
@@ -50,6 +50,7 @@ export default class Board implements BoardInterface {
 		);
 		this._gameBoard = document.createElement('div');
 		this.gameBoard.classList.add('board');
+		this.pieceSquares = [];
 	}
 
 	private create(): void {
@@ -133,10 +134,18 @@ export default class Board implements BoardInterface {
 						this._gameBoard.children[row].children[col].append(
 							classInstance?.element
 						);
+						console.log(classInstance.moveRules.direction, classInstance.type, classInstance.color);
 					}
+					this.pieceSquares.push(classInstance);
 				});
 			});
 		});
+		this.pieceSquares.forEach(piece => {
+			console.log(piece.color, piece.moveRules.direction);
+			piece.calculatePossibleMoves();
+
+		})
+
 	}
 
 	flip(): void {

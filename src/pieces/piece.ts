@@ -1,5 +1,5 @@
 import { SquareField } from '../utils/square';
-import { Coordinate } from '../utils/utils';
+import { COLS_COORD, Coordinate, COLS, objKeys } from '../utils/utils';
 
 export const Pieces = {
 	PAWN: 'PAWN',
@@ -45,6 +45,7 @@ interface PieceInt {
 	readonly image: string;
 	moveRules: MoveRuleType;
 	possibleMoves: SquareField[];
+	calculatePossibleMoves(): void;
 }
 
 export default class Piece implements PieceInt {
@@ -77,16 +78,12 @@ export default class Piece implements PieceInt {
 		this.moveRules = moveRules;
 		this.pieceNameString = `${this.color}_${type}`;
 		this.element = document.createElement('img');
+		this.init();
 
 		if (this.type !== 'PAWN') {
-			this.possibleMoves = this.calculatePossibleMoves();
+			// this.possibleMoves = this.calculatePossibleMoves();
 		}
 
-		this.init();
-	}
-
-	private setImage(): void {
-		this.image = `./src/svg/${this.color}/${this.type}`;
 	}
 
 	private init() {
@@ -104,16 +101,16 @@ export default class Piece implements PieceInt {
 	select() {
 		this.field?.selectPiece(this);
 		this.element.classList.add('selected');
-		this.possibleMoves.forEach(square => {
+		this.possibleMoves.forEach((square) => {
 			square.field.textContent = '*';
-		})
+		});
 	}
 
 	deselect() {
 		this.element.classList.remove('selected');
-		this.possibleMoves.forEach(square => {
+		this.possibleMoves.forEach((square) => {
 			square.field.textContent = '';
-		})
+		});
 	}
 
 	setCoordinate(field: SquareField) {
@@ -125,12 +122,60 @@ export default class Piece implements PieceInt {
 		return this._hasMoved;
 	}
 
-	calculatePossibleMoves(): SquareField[] {
-		const possibleMoves: SquareField[] = []
-		for (const moveDir in this.moveRules.move) {
-			console.log(moveDir)
+	calculatePossibleMoves(): void {
+		const possibleMoves: SquareField[] = [];
+		for (const moveDir of objKeys(this.moveRules['move'])) {
+			const row = this.coordinate.row;
+			const colNum = COLS[this.coordinate.col];
+			if (this.moveRules['move'][moveDir] !== 0) {
+				switch (moveDir as keyof MoveRuleType['move']) {
+					case 'horizontal':
+						for (let x = colNum - 1; x >= 0 && Math.abs(x - colNum) < this.moveRules.move.horizontal; x--) {
+							const square = this.board[row][x];
+							if (!square.hasPiece()) {
+								possibleMoves.push(square);
+							} else if (square.pieceColor() !== this.color) {
+								possibleMoves.push(square);
+								break;
+							} else break;
+						}
 
+						for (let x = colNum + 1; x < 8 && Math.abs(x - colNum) < this.moveRules.move.horizontal; x++) {
+							const square = this.board[row][x]
+							if (!square.hasPiece()) {
+								possibleMoves.push(square);
+							} else if (square.pieceColor() !== this.color) {
+								possibleMoves.push(square);
+								break;
+							} else break;
+						}
+						break;
+					case 'vertical':
+						for (let y = row - 1; y >= 0 && Math.abs(y - row) < this.moveRules.move[moveDir]; y--) {
+							const square = this.board[y][colNum]
+							if (!square.hasPiece()) {
+								possibleMoves.push(square);
+							} else if (square.pieceColor() !== this.color) {
+								possibleMoves.push(square);
+								break;
+							} else break;
+						}
+						for (let y = row + 1; y < 8 && Math.abs(y - row) < this.moveRules.move[moveDir]; y++) {
+							const square = this.board[y][colNum]
+							if (!square.hasPiece()) {
+								possibleMoves.push(square);
+							} else if (square.pieceColor() !== this.color) {
+								possibleMoves.push(square);
+								break;
+							} else break;
+						}
+						break;
+					case 'diagonal':
+						break;
+				}
+			}
 		}
-		return possibleMoves;
+		console.log(this.color, this.type, 'possible moves:', possibleMoves);
+		this.possibleMoves = possibleMoves;
 	}
 }

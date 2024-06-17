@@ -6,14 +6,14 @@ export default class Queen extends Piece {
 	private static moveRules: MoveRuleType = {
 		direction: 0,
 		move: {
-			diagonal: 0,
+			diagonal: 8,
 			vertical: 8,
 			horizontal: 8,
 		},
 		take: {
 			len: 8,
 			vertical: true,
-			diagonal: false,
+			diagonal: true,
 			horizontal: true,
 		},
 	};
