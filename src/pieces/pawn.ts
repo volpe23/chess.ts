@@ -19,14 +19,14 @@ export default class Pawn extends Piece {
         }
     }
 
-    constructor(board: SquareField[][], color: PieceColorType, image: any) {
-        super(board, color, 'PAWN', image, Pawn.moveRules)
+    constructor(board: SquareField[][], color: PieceColorType, square: SquareField, image: any) {
+        super(board, color, 'PAWN', square, image, Pawn.moveRules)
         color === 'WHITE' ? this.moveRules.move.direction = 1 : this.moveRules.move.direction = -1
     }
 
     calculatePossibleMoves (): SquareField[] {
         const possibleMoves: SquareField[] = [] as SquareField[];
-        for (let row = this.coordinate?.row; row < this.coordinate?.row + Pawn.moveRules.move.direction; row++) {
+        for (let row = this.coordinate.row; row < row + Pawn.moveRules.move.vertical; row = row + Pawn.moveRules.move.direction) {
 
         }
         return possibleMoves;

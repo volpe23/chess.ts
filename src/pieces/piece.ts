@@ -50,8 +50,8 @@ export default class Piece implements PieceInt {
 	color: PieceColorType;
 	board: SquareField[][];
 	element: HTMLDivElement;
-	coordinate: Coordinate | null;
-	private field: SquareField | null;
+	coordinate: Coordinate;
+	private field: SquareField;
 	private _hasMoved = false;
 	pieceNameString: string;
 	type: PieceType;
@@ -62,13 +62,14 @@ export default class Piece implements PieceInt {
 		board: SquareField[][],
 		color: PieceColorType,
 		type: PieceType,
+		square: SquareField,
 		image: any,
 		moveRules: MoveRuleType
 	) {
 		this.board = board;
 		this.color = color;
-		this.coordinate = null;
-		this.field = null;
+		this.coordinate = square.coordinate;
+		this.field = square;
 		this.type = type;
 		this.image = image;
 		this.moveRules = moveRules;

@@ -74,23 +74,25 @@ export default class Board implements BoardInterface {
 				pcs.col.forEach((col) => {
 					let classInstance: Piece | undefined;
 					let row = pieceObj.row;
+					if (pcs.row !== undefined) {
+						row = row + pcs.row;
+					}
+					const square = this.fields[row][col];
 					switch (piece) {
 						case 'PAWN':
-							if (pcs.row === undefined) {
-								break;
-							}
-							row = row + pcs.row;
 							classInstance = new Pawn(
 								this.fields,
 								color,
+								square,
 								pcs.image
 							);
-							console.log(color, classInstance.moveRules)
+							console.log(color, classInstance.moveRules);
 							break;
 						case 'BISHOP':
 							classInstance = new Bishop(
 								this.fields,
 								color,
+								square,
 								pcs.image
 							);
 							break;
@@ -98,6 +100,7 @@ export default class Board implements BoardInterface {
 							classInstance = new Rook(
 								this.fields,
 								color,
+								square,
 								pcs.image
 							);
 							break;
@@ -105,6 +108,7 @@ export default class Board implements BoardInterface {
 							classInstance = new King(
 								this.fields,
 								color,
+								square,
 								pcs.image
 							);
 							break;
@@ -112,6 +116,7 @@ export default class Board implements BoardInterface {
 							classInstance = new Queen(
 								this.fields,
 								color,
+								square,
 								pcs.image
 							);
 							break;
@@ -119,14 +124,13 @@ export default class Board implements BoardInterface {
 							classInstance = new Knight(
 								this.fields,
 								color,
+								square,
 								pcs.image
 							);
 							break;
 					}
 					if (classInstance !== undefined) {
-						const square = this.fields[row][col];
 						square.setPiece(classInstance);
-						classInstance.setCoordinate(square);
 						this._gameBoard.children[row].children[col].append(
 							classInstance?.element
 						);
