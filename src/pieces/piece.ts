@@ -1,3 +1,4 @@
+import Board from '../utils/board';
 import { SquareField } from '../utils/square';
 import { COLS_COORD, Coordinate, COLS, objKeys } from '../utils/utils';
 
@@ -45,6 +46,7 @@ interface PieceInt {
 	readonly image: string;
 	moveRules: MoveRuleType;
 	possibleMoves: SquareField[];
+	boardInstance: Board;
 	calculatePossibleMoves(): void;
 }
 
@@ -60,6 +62,7 @@ export default class Piece implements PieceInt {
 	image: string;
 	moveRules: MoveRuleType;
 	possibleMoves!: SquareField[];
+	boardInstance: Board;
 
 	constructor(
 		board: SquareField[][],
@@ -67,7 +70,8 @@ export default class Piece implements PieceInt {
 		type: PieceType,
 		square: SquareField,
 		image: any,
-		moveRules: MoveRuleType
+		moveRules: MoveRuleType,
+		boardInstance: Board
 	) {
 		this.board = board;
 		this.color = color;
@@ -78,6 +82,7 @@ export default class Piece implements PieceInt {
 		this.moveRules = moveRules;
 		this.pieceNameString = `${this.color}_${type}`;
 		this.element = document.createElement('img');
+		this.boardInstance = boardInstance;
 		this.init();
 
 		if (this.type !== 'PAWN') {
@@ -96,20 +101,31 @@ export default class Piece implements PieceInt {
 		this.element.setAttribute('src', this.image);
 	}
 
-	public move(coordinate: Coordinate) {}
+	public move(piece: Piece, square: SquareField, listenerFunc: () => void) {
+		square.field.textContent = '';
+		square.field.append(this.element);
+		square.setPiece(piece)
+		this.deselect(listenerFunc);
+		// this.boardInstance.calculateMoves();
+	}
 
 	select() {
 		this.field?.selectPiece(this);
 		this.element.classList.add('selected');
 		this.possibleMoves.forEach((square) => {
 			square.field.textContent = '*';
+		const listenerFunc = () => {
+			this.move(this, square, listenerFunc);
+		}
+			square.field.addEventListener('click', listenerFunc.bind(this), { once: true })
 		});
 	}
 
-	deselect() {
+	deselect(listenerFunc: () => void) {
 		this.element.classList.remove('selected');
 		this.possibleMoves.forEach((square) => {
-			square.field.textContent = '';
+			if (!square.hasPiece()) square.field.textContent = '';
+			square.field.removeEventListener('click', listenerFunc)
 		});
 	}
 

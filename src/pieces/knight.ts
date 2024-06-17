@@ -1,3 +1,4 @@
+import Board from '../utils/board';
 import { SquareField } from '../utils/square';
 import {} from '../utils/utils';
 import Piece, { PieceColorType, PieceType, MoveRuleType } from './piece';
@@ -22,8 +23,9 @@ export default class Knight extends Piece {
 		board: SquareField[][],
 		color: PieceColorType,
 		square: SquareField,
-		image: any
+		image: any,
+		boardInstance: Board
 	) {
-		super(board, color, 'KNIGHT', square, image, Knight.moveRules);
+		super(board, color, 'KNIGHT', square, image, Knight.moveRules, boardInstance);
 	}
 }

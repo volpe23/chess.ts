@@ -1,3 +1,4 @@
+import Board from '../utils/board';
 import { SquareField } from '../utils/square';
 import { Coordinate } from '../utils/utils';
 import Piece, { PieceColorType, MoveRuleType } from './piece';
@@ -22,8 +23,9 @@ export default class Bishop extends Piece {
 		board: SquareField[][],
 		color: PieceColorType,
 		square: SquareField,
-		image: any
+		image: any,
+		boardInstance: Board
 	) {
-		super(board, color, 'BISHOP', square, image, Bishop.moveRules);
+		super(board, color, 'BISHOP', square, image, Bishop.moveRules, boardInstance);
 	}
 }

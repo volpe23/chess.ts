@@ -2,7 +2,7 @@ import Board from "./utils/board";
 
 const app = document.getElementById('app');
 
-const board = new Board();
+export const board = new Board();
 
 app?.append(board.gameBoard)
 

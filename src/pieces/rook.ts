@@ -1,3 +1,4 @@
+import Board from '../utils/board';
 import { SquareField } from '../utils/square';
 import Piece, { PieceColorType, MoveRuleType } from './piece';
 
@@ -20,8 +21,9 @@ export default class Rook extends Piece {
 		board: SquareField[][],
 		color: PieceColorType,
 		square: SquareField,
-		image: any
+		image: any,
+		boardInstance: Board
 	) {
-		super(board, color, 'ROOK', square, image, Rook.moveRules);
+		super(board, color, 'ROOK', square, image, Rook.moveRules, boardInstance);
 	}
 }

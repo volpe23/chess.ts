@@ -1,10 +1,11 @@
+import Board from '../utils/board';
 import { SquareField } from '../utils/square';
 import { COLS } from '../utils/utils';
 import Piece, { PieceColorType, MoveRuleType } from './piece';
 
 export default class Pawn extends Piece {
 	private static moveRules: MoveRuleType = {
-		direction: 1,
+		direction: 0,
 		move: {
 			diagonal: 0,
 			vertical: 2,
@@ -22,17 +23,17 @@ export default class Pawn extends Piece {
 		board: SquareField[][],
 		color: PieceColorType,
 		square: SquareField,
-		image: any
+		image: any,
+		boardInstance: Board
 	) {
-		super(board, color, 'PAWN', square, image, Pawn.moveRules);
-        if (this.color === 'WHITE') this.moveRules.direction = 1
-        else if(this.color === 'BLACK') this.moveRules.direction = -1;
-        console.log(this.moveRules.direction);
-        // this.possibleMoves = this.calculatePossibleMoves();
+		super(board, color, 'PAWN', square, image, { ...Pawn.moveRules }, boardInstance);
+		if (this.color === 'WHITE') this.moveRules.direction = 1
+		else {
+			this.moveRules.direction = -1;
+		}
 	}
 
 	calculatePossibleMoves(): void {
-        console.log(this.moveRules.direction, this.color);
 		const possibleMoves: SquareField[] = [];
 		for (
 			let row = this.coordinate.row + this.moveRules.direction;

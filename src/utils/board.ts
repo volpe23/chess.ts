@@ -85,7 +85,8 @@ export default class Board implements BoardInterface {
 								this.fields,
 								color,
 								square,
-								pcs.image
+                                pcs.image,
+                                this
 							);
 							break;
 						case 'BISHOP':
@@ -93,7 +94,8 @@ export default class Board implements BoardInterface {
 								this.fields,
 								color,
 								square,
-								pcs.image
+                                pcs.image,
+                                this
 							);
 							break;
 						case 'ROOK':
@@ -101,7 +103,8 @@ export default class Board implements BoardInterface {
 								this.fields,
 								color,
 								square,
-								pcs.image
+                                pcs.image,
+                                this
 							);
 							break;
 						case 'KING':
@@ -109,7 +112,8 @@ export default class Board implements BoardInterface {
 								this.fields,
 								color,
 								square,
-								pcs.image
+                                pcs.image,
+                                this
 							);
 							break;
 						case 'QUEEN':
@@ -117,7 +121,8 @@ export default class Board implements BoardInterface {
 								this.fields,
 								color,
 								square,
-								pcs.image
+                                pcs.image,
+                                this
 							);
 							break;
 						case 'KNIGHT':
@@ -125,7 +130,8 @@ export default class Board implements BoardInterface {
 								this.fields,
 								color,
 								square,
-								pcs.image
+                                pcs.image,
+                                this
 							);
 							break;
 					}
@@ -134,24 +140,27 @@ export default class Board implements BoardInterface {
 						this._gameBoard.children[row].children[col].append(
 							classInstance?.element
 						);
-						console.log(classInstance.moveRules.direction, classInstance.type, classInstance.color);
 					}
 					this.pieceSquares.push(classInstance);
 				});
 			});
 		});
-		this.pieceSquares.forEach(piece => {
-			console.log(piece.color, piece.moveRules.direction);
-			piece.calculatePossibleMoves();
-
-		})
+        this.calculateMoves();
 
 	}
 
 	flip(): void {
 		this.fields = this.fields.map((row) => row.reverse()).reverse();
 		this.create();
-	}
+    }
+
+    calculateMoves() {
+        console.log('calculate');
+        this.pieceSquares.forEach(piece => {
+			piece.calculatePossibleMoves();
+
+		})
+    }
 
 	selectPiece(piece: Piece) {
 		if (this.selectedPiece !== null) {
